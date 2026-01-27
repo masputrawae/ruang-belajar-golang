@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js"
+      integrity="sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <form hx-post="/add" hx-target="#result" hx-swap="innerHTML">
+      <textarea name="task" id="task" placeholder="Masukkan Tugas..." cols="16" rows="8"></textarea>
+      <button>Simpan</button>
+    </form>
+    
+    <form hx-post="/load" hx-target="#result" hx-swap="innerHTML">
+      <button>Load</button>
+    </form>
+
+    <form hx-post="/remove" hx-target="#result" hx-swap="innerHTML">
+      <input type="number" name="id" id="id">
+      <button>Remove</button>
+    </form>
+
+    <ul id="result"></ul>
+  </body>
+</html>
