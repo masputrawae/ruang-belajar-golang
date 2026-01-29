@@ -13,6 +13,11 @@ func main() {
 	router := chi.NewRouter()
 	router.Use(middleware.Logger)
 
+	// Serve static files
+	fs := http.FileServer(http.Dir("./assets"))
+	router.Handle("/assets/*", http.StripPrefix("/assets/", fs))
+
+	// Routes
 	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		pages.Home("Home", "Ini Deskripsi").Render(r.Context(), w)
 	})
