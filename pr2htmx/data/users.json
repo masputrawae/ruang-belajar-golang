@@ -1,0 +1,23 @@
+[
+  {
+    "id": "id-admin-1",
+    "username": "@admin-1",
+    "password": "admin-pass-hash",
+    "email": "admin-1@mail.com",
+    "role": "admin"
+  },
+  {
+    "id": "id-employee-1",
+    "username": "@employee-1",
+    "password": "employee-pass-hash-2",
+    "email": "employee-1@mail.com",
+    "role": "employee"
+  },
+  {
+    "id": "id-employee-2",
+    "username": "@employee-2",
+    "password": "employee-pass-hash-2",
+    "email": "employee-2@mail.com",
+    "role": "employee"
+  }
+]

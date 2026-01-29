@@ -1,0 +1,12 @@
+package template
+
+templ Index() {
+	<button
+		hx-get="/counter"
+		hx-target="#result"
+		hx-swap="innerHTML">
+		Load Counter
+	</button>
+
+	<div id="result"></div>
+}
