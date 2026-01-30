@@ -1,0 +1,23 @@
+package pages
+
+import "pr4lgn/view/layouts"
+
+templ Home(isLogin bool, username string) {
+	@layouts.BaseLayout("id", "Home") {
+		<div id="content">
+			<header>
+				if isLogin {
+					<h1>Hay { username }, Selamat Datang</h1>
+				} else {
+          <h1>Hai Selamat Datang</h1>
+          <p>Silahkan Masuk / Daftar</p>
+          <nav>
+            <a href="/login">Masuk</a>
+            <br>
+            <a href="/registration">Daftar</a>
+          </nav>
+        }
+			</header>
+		</div>
+	}
+}
