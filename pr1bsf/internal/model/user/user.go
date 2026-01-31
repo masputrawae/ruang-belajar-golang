@@ -1,95 +1,135 @@
+// internal/model/user/user.go
 package user
 
 import (
+	"encoding/json"
 	"errors"
-	"fmt"
-	"strings"
+	"net/mail"
+	"os"
+	"time"
 
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type User struct {
-	ID        string `json:"id"`
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	Email     string `json:"email"`
-	Username  string `json:"username"`
-	Password  string `json:"password"`
+	ID        string    `json:"id"`
+	Username  string    `json:"username"`
+	Password  string    `json:"password"`
+	FirstName string    `json:"first_name"`
+	LastName  string    `json:"last_name"`
+	Email     string    `json:"email"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 type Users []User
+type UserManage interface {
+	Create(User)
+	Update(User)
+	Get(string) (User, error)
+	IsUsernameTaken(string) bool
+	SaveData() error
+}
 
-// Menambah User Baru
-func (u *Users) NewUser(nU User) error {
-	// Cek Apakah Username Sudah Ada?
-	for _, user := range *u {
-		if user.Username == nU.Username {
-			return errors.New("Username sudah digunakan")
+func (users *Users) Create(newData User) {
+	(*users) = append((*users), newData)
+}
+
+// Username Checking
+func (users Users) IsUsernameTaken(username string) bool {
+	for _, user := range users {
+		if user.Username == username {
+			return true
 		}
 	}
+	return false
+}
 
-	// Normalisasi Username
-	nUname := nU.Username
-	if !strings.HasSuffix(nU.Username, "@") {
-		nUname = fmt.Sprintf("%s%s", "@", nU.Username)
+// Update User
+func (users *Users) Update(newData User, username string) {
+	for i := range *users {
+		if (*users)[i].Username == username {
+			if newData.Username != "" {
+				(*users)[i].Username = newData.Username
+			}
+			if newData.Password != "" {
+				(*users)[i].Password = newData.Password
+			}
+			if newData.FirstName != "" {
+				(*users)[i].FirstName = newData.FirstName
+			}
+			if newData.LastName != "" {
+				(*users)[i].LastName = newData.LastName
+			}
+			if newData.Email != "" {
+				(*users)[i].Email = newData.Email
+			}
+
+			(*users)[i].UpdatedAt = time.Now()
+		}
 	}
+}
 
-	nID := uuid.New().String()
-	nPass, err := GeneratePasswordHash(nU.Password)
+// Get Spesific User by Username
+func (users Users) Get(username string) (User, error) {
+	for i, user := range users {
+		if user.Username == username {
+			return users[i], nil
+		}
+	}
+	return User{}, errors.New("Username not found")
+}
 
+// Save User Data to Json
+func (users Users) SaveData(file string) error {
+	jsonData, err := json.MarshalIndent(users, "", "  ")
 	if err != nil {
 		return err
 	}
-
-	(*u) = append((*u), User{
-		ID:        nID,
-		FirstName: nU.FirstName,
-		LastName:  nU.LastName,
-		Email:     nU.Email,
-		Username:  nUname,
-		Password:  nPass,
-	})
-
+	if err := os.WriteFile(file, jsonData, 0644); err != nil {
+		return err
+	}
 	return nil
 }
 
-func (u Users) GetUser(uN string) (User, error) {
-	var user User
-
-	for _, usr := range u {
-		if usr.Username == uN {
-			user = usr
-		} else {
-			return user, errors.New("Username Tidak Ditemukan")
-		}
+// Load User Data from Json
+func LoadData(file string) (Users, error) {
+	f, err := os.ReadFile(file)
+	if err != nil {
+		return nil, err
 	}
-
-	return user, nil
+	var data Users
+	if err := json.Unmarshal(f, &data); err != nil {
+		return nil, err
+	}
+	return data, nil
 }
 
-// Membuat kata sandi yang di hash
-func GeneratePasswordHash(p string) (string, error) {
-	hash, err := bcrypt.GenerateFromPassword(
+// Email Checking
+func IsValidEmail(email string) bool {
+	_, err := mail.ParseAddress(email)
+	return err == nil
+}
+
+// Generate Hash Password for User
+func GenerateHashPassword(p string) (string, error) {
+	hashed, err := bcrypt.GenerateFromPassword(
 		[]byte(p),
 		bcrypt.DefaultCost,
 	)
-
 	if err != nil {
 		return "", err
 	}
-
-	return string(hash), nil
+	return string(hashed), nil
 }
 
-// Mencocokkan hash dengan kata sandi
-func CheckPasswordHash(h, p string) bool {
-	if err := bcrypt.CompareHashAndPassword(
-		[]byte(h),
-		[]byte(p),
-	); err != nil {
-		return false
-	}
+// Checking Hash Password for User
+func CheckingHashPassword(hash, pass string) bool {
+	return bcrypt.CompareHashAndPassword([]byte(hash), []byte(pass)) == nil
+}
 
-	return true
+// Generate Random UUID for User
+func GenerateID() string {
+	return uuid.New().String()
 }
