@@ -1,0 +1,10 @@
+package pages
+
+import "pr1bsf/view/layouts"
+import "pr1bsf/internal/model/user"
+
+templ Home(title, description string, isLogin bool, u user.User) {
+	@layouts.BaseLayout(title, description, isLogin, u) {
+		<p>Duis mollit ea culpa nostrud est deserunt tempor anim tempor.</p>
+	}
+}
