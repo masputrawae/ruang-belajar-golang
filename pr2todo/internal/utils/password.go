@@ -1,0 +1,22 @@
+package utils
+
+import "golang.org/x/crypto/bcrypt"
+
+// Gunakan untuk hash (mengamankan) kata sandi
+func GenerateHashPassword(password string) (string, error) {
+	hashed, err := bcrypt.GenerateFromPassword(
+		[]byte(password),
+		bcrypt.DefaultCost,
+	)
+
+	if err != nil {
+		return "", err
+	}
+
+	return string(hashed), nil
+}
+
+// Pengecekan kata sandi, jika sama akan mengembalikan nilai true
+func CheckHashPassword(hash, password string) bool {
+	return bcrypt.CompareHashAndPassword([]byte(hash), []byte(password)) == nil
+}
