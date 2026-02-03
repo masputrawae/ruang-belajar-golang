@@ -1,0 +1,21 @@
+package components
+
+templ LoginForm(err string) {
+  <form action="/login" method="post" class="form">
+    <div class="form__group">
+      <label for="username" class="form__label">Username</label>
+      <input type="text" name="username" id="username" required>
+    </div>
+
+    <div class="form_group">
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password" required>
+    </div>
+
+    <button type="submit" class="from__btn">Login</button>
+
+    if err != "" {
+      <span class="form__err-msg">{err}</span>
+    }
+  </form>
+}

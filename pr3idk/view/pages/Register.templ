@@ -1,0 +1,10 @@
+package pages
+
+import "pr3idk/view/layouts"
+import "pr3idk/view/components"
+
+templ Register() {
+	@layouts.BaseLayout("Daftar") {
+		@components.FormLogin("/register")
+	}
+}

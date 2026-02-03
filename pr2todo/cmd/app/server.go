@@ -27,6 +27,11 @@ func Server(port, host string) {
 
 	router.Get("/", handler.HomeHandler)
 
+	router.Get("/login", handler.LoginHandler)
+	router.Post("/login", handler.LoginHandler)
+	router.Get("/register", handler.RegisterHandler)
+	router.Post("/register", handler.RegisterHandler)
+
 	fmt.Printf("\nServer running: http://%s%s\n\n", host, port)
 	http.ListenAndServe(port, router)
 }

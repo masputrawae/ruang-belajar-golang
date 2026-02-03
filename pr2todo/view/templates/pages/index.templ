@@ -1,11 +1,13 @@
 package pages
 
 import "pr2todo/internal/config"
+import "pr2todo/view/templates/components"
+import "pr2todo/internal/model"
 
 var cfg, _ = config.Load("config.yaml")
 var site = cfg.App
 
-templ Index() {
+templ Index(page string, isLogin bool, err string, user model.User) {
 	<!DOCTYPE html>
 	<html lang={ site.LanguageCode }>
 		<head>
@@ -18,13 +20,38 @@ templ Index() {
 			<script src="/main.js" defer></script>
 		</head>
 		<body>
-			<header>
-				<h1>Welcome</h1>
+			<header class="header">
+				<h1 class="header__title">
+					if !isLogin {
+						Hai👋, { user.FirstName }. Selamat Datang
+					} else {
+						Selamat Datang
+					}
+				</h1>
+				<nav class="header__nav">
+					if !isLogin {
+						<a href="/login">Login</a>
+						<a href="/register">Register</a>
+					} else {
+						<a href="/logout">Logout</a>
+					}
+				</nav>
 			</header>
 			<main>
-				<article>
-					<p>Ipsum consectetur ut do sit non.</p>
-				</article>
+				if !isLogin {
+					switch page {
+						case "/":
+							<script>
+                window.location.href = "/login"
+              </script>
+						case "/login":
+							@components.LoginForm(err)
+						case "/register":
+							@components.RegisterForm(err)
+					}
+				} else {
+					<p>Excepteur minim culpa labore labore reprehenderit. Ex excepteur ut magna est cupidatat id mollit deserunt eiusmod exercitation duis veniam dolor. Nostrud nostrud ullamco ullamco dolor sunt cillum voluptate eiusmod. In commodo ex consequat enim cillum non mollit ipsum occaecat nostrud consectetur laborum esse. Ullamco Lorem sint ea minim culpa id. Lorem proident consectetur nostrud anim velit esse sit incididunt reprehenderit mollit dolore nulla. Irure culpa incididunt sunt reprehenderit ut.</p>
+				}
 			</main>
 			<footer>
 				<aside>
