@@ -33,7 +33,7 @@ func main() {
 	router.Get("/", HomeHandler)
 
 	router.Get("/login", LoginPageHandler)
-	router.Get("/register", LoginPageHandler)
+	router.Get("/register", RegisterPageHandler)
 
 	router.Post("/login", LoginHandler)
 	router.Post("/register", RegisterHandler)
@@ -92,7 +92,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 				Path:  "/",
 			})
 
-			w.Header().Set("Authorization", ValidToken)
 			http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 			return
 		}
@@ -116,4 +115,12 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		Username: username,
 		Password: password,
 	})
+
+	http.SetCookie(w, &http.Cookie{
+		Name:  "token",
+		Value: ValidToken,
+		Path:  "/",
+	})
+
+	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 }
