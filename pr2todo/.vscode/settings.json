@@ -1,8 +1,0 @@
-{
-  "emmet.includeLanguages": {
-    "templ": "html"
-  },
-  "[templ]": {
-    "editor.defaultFormatter": "a-h.templ"
-  }
-}
