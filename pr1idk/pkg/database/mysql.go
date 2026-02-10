@@ -1,22 +1,16 @@
-package db
+package database
 
 import (
 	"database/sql"
 	"fmt"
-	"log"
-	"pr1idk/pkg/model"
+	"pr1idk/pkg/config"
+	"pr1idk/pkg/helper"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
-type Repository interface {
-}
-
-type API struct {
-}
-
-func New(c model.DBConfig) *sql.DB {
+func New(c config.DB) *sql.DB {
 	opt := "?parseTime=true&charset=utf8mb4&loc=Local"
 	dsn := fmt.Sprintf(
 		"%s:%s@tcp(%s:%s)/%s%s",
@@ -29,11 +23,11 @@ func New(c model.DBConfig) *sql.DB {
 	)
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
-		log.Fatal("\n/pkg/model/db/main.go\nError in line [30]:\n", err)
+		helper.ErrFatal(err)
 	}
 
 	if err = db.Ping(); err != nil {
-		log.Fatal("\n/pkg/model/db/main.go\nError in line [34]:\n", err)
+		helper.ErrFatal(err)
 	}
 
 	db.SetMaxOpenConns(10)
