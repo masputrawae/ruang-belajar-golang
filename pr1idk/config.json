@@ -1,0 +1,13 @@
+{
+  "db": {
+    "name": "belajar",
+    "username": "dev",
+    "password": "dev_password",
+    "host": "127.0.0.1",
+    "port": "3306"
+  },
+  "server": {
+    "host": "localhost",
+    "port": "8080"
+  }
+}
