@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+---
+
+<BaseLayout title="Home">
+	<div class="min-h-screen min-w-screen place-content-center space-y-10 p-4">
+		<h1 class="text-center font-serif text-5xl font-bold">Hai... Selamat Datang 👋</h1>
+		<nav class="mx-auto">
+			<ul class="flex items-center justify-center gap-4 text-lg font-semibold">
+				<li>
+					<a
+						class="items-ceter inline-flex rounded-md bg-blue-600 px-4 py-1.5 text-white shadow-xs/20"
+						href="/login"
+					>
+						Masuk
+					</a>
+				</li>
+				<li>
+					<a class="items-ceter inline-flex rounded-md px-3 py-1.5 shadow-xs/20" href="/register">
+						Daftar
+					</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</BaseLayout>
