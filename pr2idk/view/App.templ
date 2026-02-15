@@ -1,0 +1,26 @@
+package view
+
+import "pr2idk/view/pages"
+
+templ App(page templ.SafeURL) {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>Document</title>
+		</head>
+		<body>
+			switch page {
+				case "/":
+					@pages.Index()
+				case "/login":
+					@pages.Login()
+				case "/register":
+					@pages.Register()
+				case "/dashboard":
+					@pages.Dashboard()
+			}
+		</body>
+	</html>
+}
