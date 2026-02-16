@@ -60,6 +60,11 @@ func main() {
 	data, _ := json.MarshalIndent(todos, "", "    ")
 	fmt.Println(string(data))
 
+	// SUCCESS
+	// if err := service.TodoDelete(context.Background(), 1); err != nil {
+	// 	log.Fatal(err)
+	// }
+
 	// log.Printf("🚀 Server running: http://localhost%s\n", SERVER_ADDR)
 	// if err := http.ListenAndServe(SERVER_ADDR, nil); err != nil {
 	// 	log.Fatal(err)
