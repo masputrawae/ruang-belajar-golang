@@ -1,0 +1,14 @@
+{{ define "header" }}
+<header>
+  <h1>{{ .SiteTitle }}</h1>
+  <nav>
+    <ul>
+      {{ range $_, $v := .Nav }}
+      <li>
+        <a href="{{ $v.URL }}">{{ $v.Name }}</a>
+      </li>
+      {{ end }}
+    </ul>
+  </nav>
+</header>
+{{ end }}
